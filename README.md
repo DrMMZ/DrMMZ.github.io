@@ -6,7 +6,9 @@ Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://j
 
 ## Test
 
-Project [Grad](http://htmlpreview.github.io/?https://github.com/DrMMZ/drmmz.github.io/blob/master/Grad.html)
+Projects:
+
+1. [Grad](http://htmlpreview.github.io/?https://github.com/DrMMZ/drmmz.github.io/blob/master/Grad.html)
 
 ### Markdown
 
