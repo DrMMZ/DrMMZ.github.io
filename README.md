@@ -1,6 +1,6 @@
 ## Projects
 
-1. [Some analyses on PhD graduates in Canada](http://htmlpreview.github.io/?https://github.com/DrMMZ/drmmz.github.io/blob/master/Grad.html)
+* [Some analyses on PhD graduates in Canada](http://htmlpreview.github.io/?https://github.com/DrMMZ/drmmz.github.io/blob/master/Grad.html)
 
 We are interested in some statistics on PhD graduates in Canada, specially in population of PhD graduates and who pursued further education after PhD graduation. The data is extracted from [National graduates survey, postsecondary graduates by province of study and level of study, Table 37-10-0030-01, Statistics Canada](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3710003001).
 
@@ -8,7 +8,7 @@ Our analyses show that the population of PhD graduates in Canada had a decrease 
 
 Interestingly, in the population of PhD graduates in Canada, there are some graduates who pursued further education after graduation. We found that the PhD graduates in Alberta who pursued further education after graduation is the only province in Canada had a decrease from 2000 to 2010; in the contrast, British Columbia and Ontario shared the most growth. The results are interpreted as geographic patterns in the map of Canada.
 
-2. [Is grade of failure related to class schedule?](http://htmlpreview.github.io/?https://github.com/DrMMZ/drmmz.github.io/blob/master/School.html)
+* [Is grade of failure related to class schedule?](http://htmlpreview.github.io/?https://github.com/DrMMZ/drmmz.github.io/blob/master/School.html)
 
 We would like to discern whether there are real differences between the grade of failure rate of postsecondary students according to their class schedule (4 groups): starting in Early Morning (before 9:50 am), Morning (from 9:55 am to 12:00 pm), Afternoon (from 12:05 pm to 2:25 pm), and Late Afternoon (after 2:30 pm). 
 
