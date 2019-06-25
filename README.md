@@ -4,9 +4,9 @@
 
 We implement logistic regression with regularizaition and single hidden layer neural networks with regularization in R. All source code are attached. Then we use them alone with SVM to build spam filters. 
 
-Given an email, we train a classifier to classify whether the email is spam or non-spam. In particular, we create a vocabulary list $\mathcal{L}$ using some standard techniques in text processing and convert each email into a feature vector $\vec{\,x} \in \mathbb{R}^{n}$ for the size $n$ of $\mathcal{L}$. 
+Given an email, we train a classifier to classify whether the email is spam or non-spam. In particular, we create a vocabulary list $\mathcal{L}$ using some standard techniques in text processing and convert each email into a feature vector $\vec{x} \in \mathbb{R}^{n}$ for the size $n=1662$ of $\mathcal{L}$. 
 
-The dataset is based on a subset of the [SpamAssassin Public Corpus](http://spamassassin.apache.org/old/publiccorpus), which has 6046 messages, with about a 31% spam ratio. We only consider the body of the email, excluding the email headers. The dataset is divided into 60% for training, 20% for cross validation and 20% for test. By using the cross validation set, we are able to determine the optimal regularization parameters in all classifiers. The results are summarized.
+The dataset is based on a subset of the [SpamAssassin Public Corpus](http://spamassassin.apache.org/old/publiccorpus), which has 6046 messages, with about a 31% spam ratio. We only consider the body of the email, excluding the email headers. The dataset is divided into 60% for training, 20% for cross validation and 20% for test. By using the cross validation set, we are able to determine the optimal regularization parameters in all classifiers.
 
 * [Is grade of failure related to class schedule?](http://htmlpreview.github.io/?https://github.com/DrMMZ/drmmz.github.io/blob/master/School.html)
 
