@@ -2,7 +2,7 @@
 
 * [Spam Emails Classification](http://htmlpreview.github.io/?https://github.com/DrMMZ/drmmz.github.io/blob/master/Spam.nb.html)
 
-We implement logistic regression with regularizaition and single hidden layer neural networks with regularization in R. All source code are attached. Then we use them alone with SVM to build spam filters. 
+We implement logistic regression with regularization and single hidden layer neural networks with regularization in R. All source code are attached. Then we use them alone with SVM to build spam filters. 
 
 Given an email, we train a classifier to classify whether the email is spam or non-spam. In particular, we create a vocabulary list $\mathcal{L}$ using some standard techniques in text processing and convert each email into a feature vector $\vec{x} \in \mathbb{R}^{n}$ for the size $n=1662$ of $\mathcal{L}$. 
 
