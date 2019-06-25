@@ -1,6 +1,6 @@
 ## Projects
 
-* [Spam Emails Classification]()
+* [Spam Emails Classification](http://htmlpreview.github.io/?https://github.com/DrMMZ/drmmz.github.io/blob/master/Spam.html)
 
 We implement logistic regression with regularizaition and single hidden layer neural networks with regularization in R. All source code are attached. Then we use them alone with SVM to build spam filters. 
 
