@@ -1,0 +1,626 @@
+---
+title: "Spam Emails Classification"
+output:
+  html_notebook
+---
+
+## Abstract
+
+We implement logistic regression with regularizaition and single hidden layer neural networks with regularization in R. All source code are attached. Then we use them alone with SVM to build spam filters. 
+
+Given an email, we train a classifier to classify whether the email is spam or non-spam. In particular, we create a vocabulary list $\mathcal{L}$ using some standard techniques in text processing and convert each email into a feature vector $\vec{\,x} \in \mathbb{R}^{n}$ for the size $n$ of $\mathcal{L}$. 
+
+The dataset is based on a subset of the [SpamAssassin Public Corpus](http://spamassassin.apache.org/old/publiccorpus), which has $6046$ messages, with about a $31\%$ spam ratio. We only consider the body of the email, excluding the email headers. The dataset is divied into $60\%$ for training, $20\%$ for cross validation and $20\%$ for test. By using the cross validation set, we are able to determine the optimal regularization parameters in all classifiers. The results are summarized by the following table.
+
+```{r echo=FALSE}
+r1 = c("Logistic Regression", "No", "100%", "99.9%")
+r2 = c("Neural Networks (Single Hidden Layer 2 Units)", "No", "100%", "99.8%")
+r3 = c("SVM with Linear Kernel", "Yes, C=1", "100%", "98.0%")
+results = rbind(r1, r2, r3)
+results = data.frame(results, row.names = NULL)
+colnames(results) = c("Classifier", "Regularization", "Accuracy on Training", "Accuracy on Test")
+results
+```
+
+## Vocabulary List
+
+The dataset $\mathcal{D}$ contains $6046$ emails, with about a $31\%$ spam ratio; in particular, it contains `spam`, `easy_ham`, `hard_ham`, `easy_ham_2` and `spam_2` from [SpamAssassin Public Corpus](http://spamassassin.apache.org/old/publiccorpus). We exclude the email hearders and only use the body of the email. We preprocess each email from $\mathcal{D}$ and obtain the dataset $\mathcal{PD}$ using the following methods: removal of non-graphical characters, lower-casing, removal of HTML tags, normalizing URLs to "httpaddr", normalizing email addresses to "emailaddr", normalizing dollar signs to "dollar", removal of punctuation, removal of non-alphanumeric characters, normalizing numbers to "number", removal of stop words, word stemming, removal of white spaces, and removal of empty lines.
+
+We provide an example illustrating the preprocessing step. 
+
+An email from $\mathcal{D}$:
+
+```{r echo=FALSE}
+inspect(spams1[[3]])
+```
+
+The one in $\mathcal{PD}$ (after proprecessing):
+
+```{r echo=FALSE}
+processText(spams1[[3]]$content)
+```
+
+Note that $\mathcal{PD}$ consists of preprocessed words. Then we can create a vocabulary list \[\mathcal{L} = \{w \in \mathcal{PD} \;|\; \alpha(w) > 100\},\] where $\alpha$ counts the number of appearance. The number of words in $\mathcal{L}$, denoted by $n$, is $1662$. The most frequent $100$ words in $\mathcal{L}$ is showed below.
+
+```{r echo=FALSE}
+# Show the top 100 frequent words in `vocabList`.
+library(RColorBrewer)
+library(wordcloud)
+dark2 <- brewer.pal(6, "Dark2")   
+wordcloud(names(W), W, max.words=100, colors=dark2) 
+```
+
+### Code
+
+The below is the code for preprocessing $\mathcal{D}$ and creating $\mathcal{L}$.
+
+```{r eval=FALSE}
+# Get the body of an email as we only use the body of the email (excluding the email headers).
+getBody = function(email) {
+  index = grep("^$", email)[1]
+  email[(index+1):length(email)]
+}
+# Remove Non-Graphical Characters
+removeNonGraphic = function(txt) gsub("[^[:graph:]]", " ", txt)
+# Stripping HTML
+stripHTML = function(txt) gsub("<*[^<>]+>|<[^<>]+>*", " ", txt)
+# Normalizing Numbers
+normalizeNumber = function(txt) gsub("[0-9]+", "number", txt)
+# Normalizing URLs
+normalizeURL = function(txt) gsub("(http|https)://[^ ]*", "httpaddr", txt)
+# Normalizing Email Addresses
+normalizeEmailAddr = function(txt) gsub("[^ ]+@[^ ]+", "emailaddr", txt)
+# Normalizing Dollars
+normalizeDollar = function(txt) gsub("[$]+", "dollar", txt)
+# Removal of Non-Alphanumeric Characters
+removeNonAlphaNum = function(txt) gsub("[^a-zA-Z0-9 ]", "", txt)
+
+# Preprocessing a text
+processText = function(txt) {
+  txt = getBody(txt)
+  txt = removeNonGraphic(txt)
+  txt = tolower(txt) # Lower-casing
+  txt = stripHTML(txt)
+  txt = normalizeURL(txt)
+  txt = normalizeEmailAddr(txt)
+  txt = normalizeDollar(txt)
+  require(tm)
+  txt = removePunctuation(txt) # Removal of Punctuation
+  txt = removeNonAlphaNum(txt)
+  txt = normalizeNumber(txt)
+  txt = removeWords(txt, stopwords("english")) # Removal of Stop Words
+  txt = stemDocument(txt) # Word Stemming
+  txt = stripWhitespace(txt) # Removal of White Spaces
+  txt = txt[txt != ""] # Removal of Empty Lines
+  txt
+}
+
+# Load the dataset
+library(tm)
+D = VCorpus(DirSource("~/Downloads/Data/emails"))
+
+# Preprocess the corpus of emails using the function `processText`.
+PD = tm_map(D, content_transformer(processText))
+
+# Count the number of appearance for each word of preprocessed emails.
+dtm = DocumentTermMatrix(PD)
+W = colSums(as.matrix(dtm))
+
+# The vocabulary list contains 1662 words such that each word appeares at least 100 times.
+freqWords = W[W>100]
+L = names(freqWords)
+```
+
+```{r eval=FALSE, include=FALSE}
+write.table(L, file="~/Downloads/Data/vocabList.txt", col.names=F, row.names=F)
+```
+
+## Extracting Features
+
+Let $X \in \mathbb{F}^{m\times n}$ be the feature matrix such that $\mathbb{F} = \{0,1\}$, $m$ is the number of emails in $\mathcal{D}$ and $n$ is the number of words in $\mathcal{L}$. Denote by $1$ if the word of email in $\mathcal{PD}$ is in $\mathcal{L}$, $0$ otherwise. Recall that $m = 6046$ and $n = 1662$. Let $\vec{\,y} \in \mathbb{F}^{m}$ be the target vector corresponding to each email, where $1$ means spam and $0$ is non-spam.
+
+For example, after extracting features, the email of the above example becomes a row $\vec{\,x}_{i} \in \mathbb{F}^{n}$ of $X$ and labeled by $y_{i} = 1$ for $1\leq i\leq m$, as shown below. The 26-th element of $\vec{\,x}_{i}$ is $1$ representing the word "advic" in $\mathcal{L}$ which matches the word in the email.
+
+```{r echo=FALSE}
+a = featureText(spams1[[3]]$content, L)[1:27]
+b = featureText(spams1[[3]]$content, L)[(length(L)-5):length(L)]
+cat(a, "...", b, "and",Y4[1])
+```
+
+### Code
+
+We provide the code for obtaining the feature matrix $X$ and the target vector $\vec{\,y}$.
+
+```{r eval=FALSE, include=FALSE}
+# Read the vocabulary list
+L = read.delim("~/Downloads/Data/vocabList.txt", header=F, stringsAsFactors = F)
+colnames(L) = "Features"
+L = L$Features
+```
+
+```{r eval=FALSE}
+# Convert words to indices labeled in the set `txtList` of words.
+wordIndexing = function(txt, txtList) {
+  txt = unlist(strsplit(txt, " ")) # Split the words
+  word_indices = c()
+  if (length(txt) == 0)
+    word_indices = c(0)
+  if (length(txt) != 0) {
+    for (i in 1:length(txt)) {
+      word = txt[i]
+      if (word %in% txtList)
+        word_indices = c(word_indices, which(txtList==word))
+    }
+  }
+  word_indices
+}
+
+# Extract features from a text, where 1 indicates the word of text appeared in `txtList`, 0 otherwise.
+featureText = function(txt, txtList) {
+  txt1 = processText(txt)
+  word_indices = wordIndexing(txt1, txtList)
+  n = length(txtList)
+  x = rep(0, n)
+  for (i in 1:n) {
+    x[i] = ifelse(i %in% word_indices, 1, 0) 
+  }
+  x
+}
+
+# Get the feature matrix X
+getFeatureMatrix = function(corpus, txtList) {
+  m = length(corpus)
+  n = length(txtList)
+  X = matrix(0, nrow=m, ncol=n)
+  for (i in 1:m) {
+    X[i,] = as.numeric(corpus[[i]]$content)
+  }
+  X
+}
+
+# Load the data
+library(tm)
+spams1 = VCorpus(DirSource("~/Downloads/Data/spam"))
+spams2 = VCorpus(DirSource("~/Downloads/Data/spam_2"))
+emails1 = VCorpus(DirSource("~/Downloads/Data/easy_ham"))
+emails2 = VCorpus(DirSource("~/Downloads/Data/easy_ham_2"))
+emails3 = VCorpus(DirSource("~/Downloads/Data/hard_ham"))
+
+# Denote by 1 spam for spams1 and spams2 and by 0 non-spam for emails1, emails2, emails3.
+featureText1 = function(txt) featureText(txt, txtList=L)
+PD1 = tm_map(emails1, content_transformer(featureText1))
+X1 = getFeatureMatrix(PD1, L)
+Y1 = rep(0, nrow(X1))
+XY1 = cbind(X1, Y1)
+PD2 = tm_map(emails2, content_transformer(featureText1))
+X2 = getFeatureMatrix(PD2, L)
+Y2 = rep(0, nrow(X2))
+XY2 = cbind(X2, Y2)
+PD3 = tm_map(emails3, content_transformer(featureText1))
+X3 = getFeatureMatrix(PD3, L)
+Y3 = rep(0, nrow(X3))
+XY3 = cbind(X3, Y3)
+PD4 = tm_map(spams1, content_transformer(featureText1))
+X4 = getFeatureMatrix(PD4, L)
+Y4 = rep(1, nrow(X4))
+XY4 = cbind(X4, Y4)
+PD5 = tm_map(spams2, content_transformer(featureText1))
+X5 = getFeatureMatrix(PD5, L)
+Y5 = rep(1, nrow(X5))
+XY5 = cbind(X5, Y5)
+
+# Augmented matrix XY
+XY = rbind(XY1, XY2, XY3, XY4, XY5)
+colnames(XY) = NULL
+
+# Shuffle XY
+set.seed(123)
+index = sample(1:nrow(XY))
+XY = XY[index,]
+```
+
+```{r eval=FALSE, include=FALSE}
+write.csv(XY, file="~/Downloads/Data/spamsMatrix.csv", row.names=F)
+```
+
+## Analysis
+
+Since the problem is supervised learning, we will use logistic regression, neural networks and SVM to build the spam filters. We divide the dataset into $60\%$ for training, $20\%$ for cross-validation and $20\%$ for test set.
+
+```{r eval=FALSE, include=FALSE}
+XY = read.csv("~/Downloads/Data/spamsMatrix.csv")
+XY = as.matrix(XY)
+```
+
+```{r eval=FALSE, include=FALSE}
+# Divide the dataset
+spamTrain = XY[1:floor(0.6*nrow(XY)),]
+spamVal = XY[(floor(0.6*nrow(XY))+1):floor(0.8*nrow(XY)),]
+X_train = spamTrain[,-1]
+y_train = spamTrain[,ncol(XY)]
+X_val = spamVal[,-1]
+y_val = spamVal[,ncol(XY)]
+spamTest = XY[(floor(0.8*nrow(XY))+1):nrow(XY),]
+X_test = spamTest[,-1]
+y_test = spamTest[,ncol(XY)]
+```
+
+### Logistic Regression
+
+The logistic regression $h$ with regularization is implemented, where regularization parameter is denoted by $\lambda$. Let $n$ be the number of features. The cost function on $\vec{\,\theta} \in \mathbb{R}^{n}$ is defined by \[J(\vec{\,\theta}) = \frac{1}{m}[-\vec{\,y}\cdot\log{(h)} - (1-\vec{\,y})\cdot\log{(1-h)}] + \frac{\lambda}{2m}(\vec{\,\theta}\cdot\vec{\,\theta}),\] where $m$ is the number of training examples and $\vec{\,y} \in \mathbb{R}^{m}$ is the target vector. In the implementation, we use the conjugate gradient method to optimize $J(\vec{\,\theta})$. 
+
+The following figure (learning curve) shows that the logistic regression *without* regularization is a good classifier because both the cross validation (labeled by red color) and training error (labeled by black color) converge to a relatively low value as the number of training examples increases. The classifier gets a training accuracy of about $100\%$ and a test set accuracy of about $99.9\%$, where it predicts $1$ if $h \geq 0.5$ and $0$ otherwise.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+logLearningCurve(X_train, y_train, X_val, y_val, lambda = 0)
+```
+
+Moreover, the regularization parameter $\lambda = 0$ can be confirmed by the below figure, where both the training labeled by black and cross validation error labeled by red color increase as $\lambda$ increases.
+
+```{r echo=FALSE}
+logValidation(X_train, y_train, X_val, y_val)
+```
+
+#### Code
+
+Implementation of logistic regression with regularization, learning curve and validation curve.
+
+```{r eval=FALSE}
+# Sigmoid function
+  sigmoid = function(z) {
+  1/(1+exp(-z))
+  }
+
+# Logistic regression with the matrix X and the parameter vector theta
+  logistic = function(X, theta) {
+  sigmoid(X %*% theta)
+  }
+  
+# Cost function for logistic regression with regularization lambda, where X contains the bias vector.
+  logCost = function(X, y, theta, lambda) {
+  m = length(y)
+  h = logistic(X, theta)
+  -1/m * (y %*% log(h) + (1-y) %*% log(1-h)) + (lambda/(2*m)) * sum((theta[2:ncol(X)])^2)
+  }
+  
+# Gradient vector for logCost with regularization
+  logGrad = function(X, y, theta, lambda) {
+  m = length(y)
+  h = logistic(X, theta)
+  theta1 = c(0, theta[-1])
+  1/m * (t(X) %*% (h - y)) + (lambda/m) * theta1
+  }
+  
+# Logistic regression using conjugate gradien optimazition algorithm
+logLearning = function(X, y, lambda, method="CG", maxit) {
+  X_1 = as.matrix(cbind(1, X)) # The matrix X_1 contains the bias vector while X doesn't
+  n = ncol(X_1)
+  theta = rep(0, ncol(X_1))
+  costFunc = function(theta) logCost(X_1, y, theta, lambda)
+  gradFunc = function(theta) logGrad(X_1, y, theta, lambda)
+  optimCost = optim(par = theta, fn = costFunc, gr = gradFunc, method = c(method), control = list("maxit" = maxit))
+  optimCost
+}
+
+# Predictions on the matrix X
+logPredict = function(X, theta) {
+  X_1 = as.matrix(cbind(1, X))
+  ifelse(logistic(X_1, theta) >= 0.5, 1, 0)
+}
+
+# Learning curve for logistic regression
+logLearningCurve = function(X, y, Xval, yval, lambda) {
+  a = floor(min(length(y), length(yval))/4)
+  m = c(a*1, a*2, a*3, a*4)
+  l = length(m)
+  error_train = rep(0, l)
+  error_val = rep(0, l)
+  for (i in 1:l) {
+    X_i = X[1:m[i],]
+    y_i = y[1:m[i]]
+    logFit = logLearning(X_i, y_i, lambda, method="CG", maxit=500)
+    theta = logFit$par
+    error_train[i] = logCost(as.matrix(cbind(1, X_i)), y_i, theta, 0)
+    error_val[i] = logCost(as.matrix(cbind(1, Xval)), yval, theta, 0)
+  }
+  L = list(error_train = error_train, error_val = error_val)
+  require(ggplot2)
+  ggplot(data.frame(m=m, error_train=L[[1]], error_val=L[[2]]), aes(x=m, y=error_train)) + 
+    geom_line() +
+    geom_line(aes(x=m, y=error_val), color="red") +
+    xlab("Number of training examples") + ylab("Error") +
+    ggtitle(paste("Learning Curve for Logistic Regression with Lambda =", lambda))
+}
+
+# Validation curve for logistic regression selecting the optimal regularization parameter lambda
+logValidation = function(X, y, Xval, yval) {
+  lambda_vec = c(0, 0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30)
+  error_train = rep(0, length(lambda_vec))
+  error_val = rep(0, length(lambda_vec))
+  for (i in 1:length(lambda_vec)) {
+    lambda = lambda_vec[i]
+    logFit = logLearning(X, y, lambda, method="CG", maxit=500)
+    theta = logFit$par
+    error_train[i] = logCost(as.matrix(cbind(1, X)), y, theta, 0)
+    error_val[i] = logCost(as.matrix(cbind(1, Xval)), yval, theta, 0)
+    }
+  V = list(error_train = error_train, error_val = error_val)
+  require(ggplot2)
+  ggplot(data.frame(m=lambda_vec, error_train=V[[1]], error_val=V[[2]]), aes(x=m, y=error_train)) +
+    geom_line() +
+    geom_line(aes(x=m, y=error_val), color="red") +
+    xlab("Regularization Parameter Lambda") + ylab("Error") +
+    ggtitle("Validation Curve for Logistic Regression")
+}
+```
+
+```{r eval=FALSE, include=FALSE}
+# Logistic regression without regularization
+modelLog = logLearning(X_train, y_train, lambda = 0, maxit = 500)
+thetaLog = modelLog$par
+yhatLog = logPredict(X_test, thetaLog)
+table(yhatLog, y_test)
+paste("Accuracy on Test:", mean(yhatLog == y_test))
+paste("Accuracy on Training:", mean(logPredict(X_train, thetaLog) == y_train))
+```
+
+### Neural Networks
+
+We also implement single hidden layer neural networks $h$ with regularization, where $\lambda$ is the regularization parameter. The cost function is defined by \[\frac{1}{m}\sum_{k=1}^{K}[-\vec{y_{k}}\cdot\log(h_{k}) - (1-\vec{y_{k}})\cdot\log(1-h_{k})] + \frac{\lambda}{2m}[\sum_{i=1}^{s_{1}}\sum_{j=1}^{n}(\Theta_{i,j}^{1})^{2} + \sum_{i=1}^{s_{2}}\sum_{j=1}^{s_{1}}(\Theta_{i,j}^{2})^{2}],\] where $m$ is the number of examples, $n$ is the number of features, $K$ is the number of labels, $\vec{y_{k}} \in \{0,1\}^{K}$ is an elementary vector, $h_{k} \in \mathbb{R}^{m}$ is the $k$-th output unit, $s_{1}, s_{2}$ are the number of units in the hidden layer and output layer, respectively, and $\Theta^{1} \in \mathbb{R}^{s_1\times n}, \Theta^{2} \in \mathbb{R}^{s_2\times s_1}$ are learning parameter matrices. The backpropagation method and the conjugate gradient method are used for finding paritial derivatives of the cost function and optimazation, respectively.
+
+The following learning curve for the $2$ units single hidden layer neural networks without regularization indicates a good trade-off between bias and variance. So, we choose that classifier and obtain a training accuracy of about $100\%$ and a test accuracy of about $99.8\%$.
+
+```{r echo=FALSE}
+nnLearningCurve(X_train, y_train+1, X_val, y_val+1, hidden_layer_size=2, num_labels=2, lambda=0)
+```
+
+```{r echo=FALSE}
+nnValidation(X_train, y_train+1, X_val, y_val+1, hidden_layer_size=2, num_labels=2)
+```
+
+### Code
+
+```{r eval=FALSE}
+# Sigmoid function
+sigmoid = function(z) {
+    1/(1+exp(-z))
+}
+
+# Feedforward and cost function
+nnCost = function(nn_params, input_layer_size, hidden_layer_size, num_labels, X, y, lambda) {
+  Theta1 = matrix(nn_params[1:(hidden_layer_size * (input_layer_size + 1))], nrow = hidden_layer_size, ncol = input_layer_size + 1, byrow = T)
+  Theta2 = matrix(nn_params[(1 + (hidden_layer_size * (input_layer_size + 1))):length(nn_params)], nrow = num_labels, ncol = hidden_layer_size + 1, byrow = T)
+  m = nrow(X)
+  X1 = as.matrix(cbind(1, X))
+  X2 = sigmoid(Theta1 %*% t(X1))
+  X2 = as.matrix(rbind(1, X2))
+  H = sigmoid(Theta2 %*% X2)
+  # Elementary vector
+  e = function(k) {
+    Y = diag(x = 1, nrow = num_labels)
+    Y[,k]
+  }
+  d = rep(0, m)
+  for (i in 1:m) {
+    d[i] = -e(y[i]) %*% log(H[,i]) - (1-e(y[i])) %*% log(1-H[,i])
+  }
+  Theta1 = Theta1[,-1]
+  Theta2 = Theta2[,-1]
+  r = ( lambda/(2*m) ) * ( sum(apply(Theta1^2, 1, sum)) + sum(apply(Theta2^2, 1, sum)) )
+  mean(d) + r
+}
+
+# The backpropagation algorithm to compute the gradient for the neural network cost function
+nnGrad = function(nn_params, input_layer_size, hidden_layer_size, num_labels, X, y, lambda) {
+  Theta1 = matrix(nn_params[1:(hidden_layer_size * (input_layer_size + 1))], nrow = hidden_layer_size, ncol = input_layer_size + 1, byrow = T)
+  Theta2 = matrix(nn_params[(1 + (hidden_layer_size * (input_layer_size + 1))):length(nn_params)], nrow = num_labels, ncol = hidden_layer_size + 1, byrow = T)
+  m = nrow(X)
+  Delta_1 = matrix(0, nrow = hidden_layer_size, ncol = input_layer_size + 1)
+  Delta_2 = matrix(0, nrow = num_labels, ncol = hidden_layer_size + 1)
+  for (t in 1:m) {
+    a_1 = X[t,]
+    a_1 = c(1, a_1)
+    z_2 = Theta1 %*% a_1
+    a_2 = sigmoid(z_2)
+    a_2 = c(1, a_2)
+    z_3 = Theta2 %*% a_2
+    a_3 = sigmoid(z_3)
+    # Elementary vector
+    e = function(k) {
+    Y = diag(x = 1, nrow = num_labels)
+    Y[,k]
+    }
+    delta_3 = a_3 - e(y[t])
+    delta_2 = ( t(Theta2) %*% delta_3 ) * ( a_2 * (1 - a_2) )
+    delta_2 = delta_2[-1]
+    Delta_1 = Delta_1 + delta_2 %*% t(a_1)
+    Delta_2 = Delta_2 + delta_3 %*% t(a_2)
+  }
+  D_1 = (1/m) * Delta_1 + (lambda/m) * as.matrix(cbind(0, Theta1[,-1]))
+  D_2 = (1/m) * Delta_2 + (lambda/m) * as.matrix(cbind(0, Theta2[,-1]))
+  # Unroll
+  c(t(D_1), t(D_2))
+}
+
+# Randomly initialize the weights to small values, where L_in and L_out are the number of units in the layers adjacent to Theta^l
+randInitializeWeights = function(L_in, L_out) {
+  epsilon_init = sqrt(6) / sqrt(L_in + L_out)
+  W = matrix(runif(n = L_out * (1+L_in)), nrow = L_out, ncol = 1+L_in) * 2 * epsilon_init - epsilon_init
+}
+
+# NNet
+nnLearning = function(input_layer_size, hidden_layer_size, num_labels, X, y, lambda) {
+  Theta1 = randInitializeWeights(input_layer_size, hidden_layer_size)
+  Theta2 = randInitializeWeights(hidden_layer_size, num_labels)
+  nn_params = c(t(Theta1), t(Theta2))
+  costFunc = function(p) nnCost(p, input_layer_size, hidden_layer_size, num_labels, X, y, lambda)
+  gradFunc = function(p) nnGrad(p, input_layer_size, hidden_layer_size, num_labels, X, y, lambda)
+  nnFit = optim(par = nn_params, fn = costFunc, gr = gradFunc, method = c("CG"), control = list(maxit = 500))
+  nn_params = nnFit$par
+  Theta1 = matrix(nn_params[1:(hidden_layer_size * (input_layer_size + 1))], nrow = hidden_layer_size, ncol = input_layer_size + 1, byrow = T)
+  Theta2 = matrix(nn_params[(1 + (hidden_layer_size * (input_layer_size + 1))):length(nn_params)], nrow = num_labels, ncol = hidden_layer_size + 1, byrow = T)
+  return(list(converge=nnFit$converge, Theta1=Theta1, Theta2=Theta2))
+}
+
+# NNet prediction 
+predictNN = function(Theta1, Theta2, X) {
+  X = as.matrix(cbind(1, X))
+  X2 = sigmoid(Theta1 %*% t(X))
+  X2 = as.matrix(rbind(1, X2))
+  P = sigmoid(Theta2 %*% X2)
+  apply(P, 2, which.max)
+}
+
+# Learning curve for nnet
+nnLearningCurve = function(X, y, Xval, yval, hidden_layer_size, num_labels, lambda) {
+  a = floor(min(length(y), length(yval))/4)
+  m = c(a*1, a*2, a*3, a*4)
+  l = length(m)
+  error_train = rep(0, l)
+  error_val = rep(0, l)
+  for (i in 1:l) {
+    X_i = X[1:m[i],]
+    y_i = y[1:m[i]]
+    Xval_i = Xval[1:m[i],]
+    yval_i = yval[1:m[i]]
+    nnetFit = nnLearning(input_layer_size=ncol(X), hidden_layer_size, num_labels, X_i, y_i, lambda)
+    Theta1 = nnetFit$Theta1
+    Theta2 = nnetFit$Theta2
+    # Unrolled vector for Thetas
+    nn_params = c(t(Theta1), t(Theta2))
+    error_train[i] = nnCost(nn_params, input_layer_size=ncol(X), hidden_layer_size, num_labels, X_i, y_i, 0)
+    error_val[i] = nnCost(nn_params, input_layer_size=ncol(X), hidden_layer_size, num_labels, Xval_i, yval_i, 0)
+  }
+  L = list(error_train = error_train, error_val = error_val)
+  require(ggplot2)
+  ggplot(data.frame(m=m, error_train=L[[1]], error_val=L[[2]]), aes(x=m, y=error_train)) + 
+    geom_line() +
+    geom_line(aes(x=m, y=error_val), color="red") +
+    xlab("Number of training examples") + ylab("Error") +
+    ggtitle(paste("Learning Curve for NNet with", hidden_layer_size, "Units and Lambda =", lambda))
+}
+
+# Validation curve for NNet selecting the optimal regularization parameter lambda.
+nnValidation = function(X, y, Xval, yval, hidden_layer_size, num_labels) {
+  lambda_vec = c(0, 0.01, 0.03, 0.1, 0.3, 1, 3, 10)
+  #hiddenLayer_vec = c(2, 5, 10)
+  error_train = rep(0, length(lambda_vec))
+  error_val = rep(0, length(lambda_vec))
+  for (i in 1:length(lambda_vec)) {
+    #hidden_layer_size = hiddenLayer_vec[i]
+    lambda = lambda_vec[i]
+    nnetFit = nnLearning(input_layer_size = ncol(X), hidden_layer_size, num_labels, X, y, lambda)
+    Theta1 = nnetFit$Theta1
+    Theta2 = nnetFit$Theta2
+    # Unrolled vector for Thetas
+    nn_params = c(t(Theta1), t(Theta2))
+    error_train[i] = nnCost(nn_params, input_layer_size = ncol(X), hidden_layer_size, num_labels, X, y, 0)
+    error_val[i] = nnCost(nn_params, input_layer_size = ncol(X), hidden_layer_size, num_labels, Xval, yval, 0)
+    }
+  V = list(error_train = error_train, error_val = error_val)
+  require(ggplot2)
+  ggplot(data.frame(m=lambda_vec, error_train=V[[1]], error_val=V[[2]]), aes(x=m, y=error_train)) +
+    geom_line() +
+    geom_line(aes(x=m, y=error_val), color="red") +
+    xlab("Regularization Parameter Lambda") + ylab("Error") +
+    ggtitle("Validation Curve for Neural Networks with", hidden_layer_size, "Units")
+}
+```
+
+```{r eval=FALSE, include=FALSE}
+# 2 units single hidden layer NNet without regularization
+modelNNet = nnLearning(input_layer_size = ncol(X_train), hidden_layer_size = 2, num_labels = 2, X_train, (y_train+1), lambda = 0)
+yhatNNet = predictNN(modelNNet$Theta1, modelNNet$Theta2, X_test)
+table(yhatNNet, y_test+1)
+paste("Accuracy on Test:", mean(yhatNNet == (y_test+1)))
+paste("Accuracy on Training:", mean(predictNN(modelNNet$Theta1, modelNNet$Theta2, X_train) == (y_train+1)))
+```
+
+### SVM
+
+We apply SVM from `e1071` package with linear kernel using the regularization parameter $C=1$. The learning and validation curve show that the SVM with regularization parameter $C=1$ is a good classifier. Its training accuracy of about $100\%$ and test accuracy of about $98.0\%$.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+svmLearningCurve(V1663~., spamTrain, spamVal, C=1)
+```
+
+```{r echo=FALSE}
+svmValidation(V1663~., spamTrain, spamVal)
+```
+
+```{r eval=FALSE, message=FALSE, warning=FALSE}
+library(e1071)
+
+# Learning curve for SVM with linear kernel
+svmLearningCurve = function(formula, trainingData, cvData, C) {
+  a = floor(min(nrow(trainingData), nrow(cvData))/4)
+  m = c(a*1, a*2, a*3, a*4)
+  l = length(m)
+  error_train = rep(0, l)
+  error_val = rep(0, l)
+  for (i in 1:l) {
+    trainingData_i = trainingData[1:m[i],]
+    cvData_i = cvData[1:m[i],]
+    svmFit = svm(formula(formula), data=trainingData_i, scale=F, kernel="linear", cost=C, type="C-classification")
+    theta = coef(svmFit)
+    error_train[i] = mean(predict(svmFit) != trainingData_i[,ncol(trainingData_i)])
+    error_val[i] = mean(predict(svmFit, newdata=cvData_i) != cvData_i[,ncol(cvData_i)])
+  }
+  L = list(error_train = error_train, error_val = error_val)
+  require(ggplot2)
+  ggplot(data.frame(m=m, error_train=L[[1]], error_val=L[[2]]), aes(x=m, y=error_train)) + 
+    geom_line() +
+    geom_line(aes(x=m, y=error_val), color="red") +
+    xlab("Number of training examples") + ylab("Error") +
+    ggtitle(paste("Learning Curve for SVM with Regularization C =", C))
+}
+
+# Validation curve for SVM selecting the optimal regularization parameter C
+svmValidation = function(formula, trainingData, cvData) {
+  C_vec = c(0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30)
+  error_train = rep(0, length(C_vec))
+  error_val = rep(0, length(C_vec))
+  for (i in 1:length(C_vec)) {
+    C = C_vec[i]
+    svmFit = svm(formula(formula), data=trainingData, scale=F, kernel="linear", cost=C, type="C-classification")
+    theta = coef(svmFit)
+    error_train[i] = mean(predict(svmFit) != trainingData[,ncol(trainingData)])
+    error_val[i] = mean(predict(svmFit, newdata=cvData) != cvData[,ncol(cvData)])
+    }
+  V = list(error_train = error_train, error_val = error_val)
+  require(ggplot2)
+  ggplot(data.frame(m=C_vec, error_train=V[[1]], error_val=V[[2]]), aes(x=m, y=error_train)) +
+    geom_line() +
+    geom_line(aes(x=m, y=error_val), color="red") +
+    xlab("Regularization Parameter C") + ylab("Error") +
+    ggtitle("Validation Curve for SVM with Linear Kernel")
+}
+```
+
+```{r eval=FALSE, include=FALSE}
+modelSVM = svm(V1663~., data=spamTrain, scale=F, kernel="linear", cost=1, type="C-classification")
+#modelSVM = svm(X_train, y_train, scale=F, kernel="linear", cost=0.1, type="C-classification")
+thetaSVM = coef(modelSVM)
+yhatSVM = predict(modelSVM, newdata=spamTest)
+table(yhatSVM, y_test)
+paste("Accuracy on Test:", mean(yhatSVM == y_test))
+paste("Accuracy on Training:", mean(predict(modelSVM) == y_train))
+```
+
+### Top Predictors for Spam
+
+We inspect the top predictive words for spam classified by logistic regression and SVM, respectively.
+
+```{r echo=FALSE}
+thetaLog = thetaLog[-1]
+names(thetaLog) = 1:length(thetaLog)
+logP = names(sort(thetaLog[thetaLog>0], decreasing=T)[1:20])
+L[as.numeric(logP)]
+```
+
+```{r echo=FALSE}
+thetaSVM = thetaSVM[-1]
+names(thetaSVM) = 1:length(thetaSVM)
+svmP = names(sort(thetaSVM[thetaSVM>0], decreasing=T)[1:20])
+L[as.numeric(svmP)]
+```
