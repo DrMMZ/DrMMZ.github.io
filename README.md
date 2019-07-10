@@ -1,5 +1,9 @@
 ## Projects
 
+* [Credit Card Fraud Detection](http://htmlpreview.github.io/?https://github.com/DrMMZ/drmmz.github.io/blob/master/FraudDetection.nb.html)
+
+We detect anomalous behavior in credit card transactions using the [dataset](https://www.kaggle.com/mlg-ulb/creditcardfraud). The problem can be solved by supervised learning and anomaly detection. In particular, we will use logistic regression with regularization and Gaussian models.
+
 * [Spam Emails Classification](http://htmlpreview.github.io/?https://github.com/DrMMZ/drmmz.github.io/blob/master/Spam.nb.html)
 
 We implement logistic regression with regularization and single hidden layer neural networks with regularization in R. All source code are attached. Then we use them alone with SVM to build spam filters. 
