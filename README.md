@@ -1,5 +1,9 @@
 ## Projects
 
+* [Digit Recognizer](http://htmlpreview.github.io/?https://github.com/DrMMZ/drmmz.github.io/blob/master/dr.nb.html)
+
+We use multi-class classification algorithms such as one-vs-all logistic regression and regularized single hidden layer neural networks to predict handwritten digits.
+
 * [Credit Card Fraud Detection](http://htmlpreview.github.io/?https://github.com/DrMMZ/drmmz.github.io/blob/master/FraudDetection.nb.html)
 
 We detect anomalous behavior in credit card transactions using the [dataset](https://www.kaggle.com/mlg-ulb/creditcardfraud). The problem can be solved by supervised learning and anomaly detection. In particular, we will use logistic regression with regularization and Gaussian models.
