@@ -2,7 +2,7 @@
 
 * [Digit Recognizer](http://htmlpreview.github.io/?https://github.com/DrMMZ/drmmz.github.io/blob/master/dr.nb.html)
 
-We use multi-class classification algorithms such as one-vs-all logistic regression and regularized single hidden layer neural networks to predict handwritten digits.
+We use multi-class classification algorithms such as one-vs-all logistic regression and regularized single hidden layer neural networks to predict [handwritten digits](https://www.kaggle.com/c/digit-recognizer).
 
 * [Credit Card Fraud Detection](http://htmlpreview.github.io/?https://github.com/DrMMZ/drmmz.github.io/blob/master/FraudDetection.nb.html)
 
