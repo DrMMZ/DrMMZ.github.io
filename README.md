@@ -1,5 +1,9 @@
 ## Projects
 
+* [Movie Recommendations](http://htmlpreview.github.io/?https://github.com/DrMMZ/drmmz.github.io/blob/master/Movies.nb.html)
+
+The collaborative filtering with regularization algorithm is implemented in R, which uses MSE as the loss function and conjugate gradient as the optimization function. Then we apply it to a [dataset of movie ratings](https://grouplens.org/datasets/movielens/). One is tested on the author’s ratings and make personal movie recommendations.
+
 * [Digit Recognizer](http://htmlpreview.github.io/?https://github.com/DrMMZ/drmmz.github.io/blob/master/dr.nb.html)
 
 We use multi-class classification algorithms such as one-vs-all logistic regression and regularized single hidden layer neural networks to predict [handwritten digits](https://www.kaggle.com/c/digit-recognizer).
