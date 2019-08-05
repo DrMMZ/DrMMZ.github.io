@@ -1,5 +1,9 @@
 ## Projects
 
+* [Large Scale Time Series Machine Learning](http://htmlpreview.github.io/?https://github.com/DrMMZ/drmmz.github.io/blob/master/housing.nb.html)
+
+Implemented stochastic gradient descent in R and applied it to a [large scale time series dataset](https://www.gov.uk/guidance/about-the-price-paid-data). Moreover, provided a method for model evaluation which is used in the learning curve for time series data.
+
 * [Movie Recommendations](http://htmlpreview.github.io/?https://github.com/DrMMZ/drmmz.github.io/blob/master/Movies.nb.html)
 
 Implemented the collaborative filtering with regularization algorithm in R using mean square error (MSE) as the cost function and conjugate gradient as the optimization function. Then applied to a [dataset of movie ratings](https://grouplens.org/datasets/movielens/), tested on the author’s ratings using MSE and made personal movie recommendations.
