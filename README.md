@@ -2,7 +2,7 @@
 
 * [Large Scale Time Series Machine Learning](http://htmlpreview.github.io/?https://github.com/DrMMZ/drmmz.github.io/blob/master/housing.nb.html)
 
-Implemented stochastic gradient descent in R and applied it to a [large scale time series dataset](https://www.gov.uk/guidance/about-the-price-paid-data). Moreover, provided a method for model evaluation which is used in the learning curve for time series data.
+Implemented stochastic gradient descent in R and applied it to a [large scale time series dataset](https://www.gov.uk/guidance/about-the-price-paid-data). Moreover, provided a method for model evaluation which can be used in the learning curve for time series data.
 
 * [Movie Recommendations](http://htmlpreview.github.io/?https://github.com/DrMMZ/drmmz.github.io/blob/master/Movies.nb.html)
 
