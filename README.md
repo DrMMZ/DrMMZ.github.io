@@ -2,24 +2,24 @@
 
 * [Movie Recommendations](http://htmlpreview.github.io/?https://github.com/DrMMZ/drmmz.github.io/blob/master/Movies.nb.html)
 
-We apply the collaborative filtering with regularization algorithm to a [dataset of movie ratings](https://grouplens.org/datasets/movielens/). One is tested on the author’s ratings and make personal movie recommendations.
+Implemented the collaborative filtering with regularization algorithm in R using mean square error (MSE) as the cost function and conjugate gradient as the optimization function. Then applied to a [dataset of movie ratings](https://grouplens.org/datasets/movielens/), tested on the author’s ratings using MSE and made personal movie recommendations.
 
 * [Digit Recognizer](http://htmlpreview.github.io/?https://github.com/DrMMZ/drmmz.github.io/blob/master/dr.nb.html)
 
-We use multi-class classification algorithms such as one-vs-all logistic regression and regularized single hidden layer neural networks to predict [handwritten digits](https://www.kaggle.com/c/digit-recognizer).
+Used multi-class classification algorithms such as one-vs-all regularized logistic regression and single hidden layer neural networks with regularization to predict [handwritten digits](https://www.kaggle.com/c/digit-recognizer). One-vs-all regularized logistic regression was implemented in R.
 
 * [Credit Card Fraud Detection](http://htmlpreview.github.io/?https://github.com/DrMMZ/drmmz.github.io/blob/master/FraudDetection.nb.html)
 
-We detect anomalous behavior in credit card transactions using the [dataset](https://www.kaggle.com/mlg-ulb/creditcardfraud). The problem can be solved by supervised learning and anomaly detection. In particular, we will use logistic regression with regularization and Gaussian models.
+Detected anomalous behaviour in [credit card transactions](https://www.kaggle.com/mlg-ulb/creditcardfraud). As the dataset is highly imbalanced, the $F_{1}$ score was used. Applied regularized logistic regression trained on under/oversampling dataset and Gaussian models with selected features. Moreover, implemented in R for Gaussian and Multivariate Gaussian models, and an algorithm to select a threshold using the evaluation metric on a cross-validation set.
 
 * [Spam Emails Classification](http://htmlpreview.github.io/?https://github.com/DrMMZ/drmmz.github.io/blob/master/Spam.nb.html)
 
-Given an email, we train a classifier to classify whether the email is spam or non-spam. In particular, we create a vocabulary list using some techniques in text processing and convert each email into a feature vector. Then we use logistic regression, neural networks and SVM to build spam filters. The dataset is based on a subset of the [SpamAssassin Public Corpus](http://spamassassin.apache.org/old/publiccorpus). At the end, we inspect the top predictive words for spam classified by logistic regression and SVM, respectively. Interestingly, they are quite different.
+Based on the [emails](http://spamassassin.apache.org/old/publiccorpus), created a vocabulary list using some techniques in text processing and converted each email into a feature vector. Then used logistic regression, neural networks and SVM to build spam filters. The regularized logistic regression, single hidden layer neural networks with regularization, learning curve and algorithms to select the regularization parameter and number of units were implemented in R.
 
 * [Is grade of failure related to class schedule?](http://htmlpreview.github.io/?https://github.com/DrMMZ/drmmz.github.io/blob/master/School.html)
 
-We would like to discern whether there are real differences between the grade of failure rate of postsecondary students according to their class schedule. We will use a dataset extracted from a [database](https://www.kaggle.com/Madgrades/uw-madison-courses) and apply SQL technique.
+Applied SQL technique on a dataset extracted from a [database](https://www.kaggle.com/Madgrades/uw-madison-courses). Since the assumptions of analysis of variance (ANOVA) test for our data are not met, used the Kruskal–Wallis test to discern whether there were real differences between the grade of failure rate of postsecondary students according to their class schedule.
 
 * [Some analyses on PhD graduates in Canada](http://htmlpreview.github.io/?https://github.com/DrMMZ/drmmz.github.io/blob/master/Grad.html)
 
-We are interested in some statistics on PhD graduates in Canada, specially in population of PhD graduates and who pursued further education after PhD graduation. The data is extracted from [National graduates survey, postsecondary graduates by province of study and level of study, Table 37-10-0030-01, Statistics Canada](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3710003001). The results are interpreted as geographic patterns in the map of Canada.
+Visualized some statistics on [graduates in Canada](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3710003001), specially in population of PhD graduates and who pursued further education after PhD graduation. The results were interpreted as geographic patterns in the map of Canada.
