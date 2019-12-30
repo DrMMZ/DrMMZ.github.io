@@ -4,7 +4,7 @@
 
 This case study uses the [data](https://archive.ics.uci.edu/ml/datasets/Bank+Marketing) that includes direct marketing campaigns (i.e., phone calls) of a Portuguese banking institution. The goal is to predict if the client will subscribe a term deposit (indicated in the variable `y`).
 
-The dataset contains $41,188$ examples, $20$ features and a response variable labled by `y`, ordered by date (from May 2008 to November 2010). Since the dataset is imbalanced (about $11\%$ subscribe rate), the $F_1$ score will be used throughout this case study. The similar dataset was analyzed in [Moro et al., 2014](http://dx.doi.org/10.1016/j.dss.2014.03.001). In this case study, we improve their results.
+The similar dataset was analyzed in [Moro et al., 2014](http://dx.doi.org/10.1016/j.dss.2014.03.001). In this work, we test four binary classificaition models, using the packages `rminer`, `rpart` and `nnet` from `R` and the package `nn_model_np` of `Python` implemented by the author: decision tree (`R`), logistic regression (`R`), $2$-layer neural network (`R`) and $3$-layer neural network (`Python`). By using a certain splitting ratio and more complex model $3$-layer neural network, we are able to improve the results in [Table 3, Moro et al., 2014](http://dx.doi.org/10.1016/j.dss.2014.03.001).
 
 * [Movie Recommendations](http://htmlpreview.github.io/?https://github.com/DrMMZ/drmmz.github.io/blob/master/Movies.nb.html)
 
