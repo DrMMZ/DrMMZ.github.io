@@ -1,10 +1,14 @@
 ## Projects
 
-* [Case Study - Bank Marketing](http://htmlpreview.github.io/?https://github.com/DrMMZ/drmmz.github.io/blob/master/bank.nb.html)
+* Case Study - Bank Marketing
 
-This case study uses the [data](https://archive.ics.uci.edu/ml/datasets/Bank+Marketing) that includes direct marketing campaigns (i.e., phone calls) of a Portuguese banking institution. The goal is to predict if the client will subscribe a term deposit (indicated in the variable `y`).
+This case study uses the [data](https://archive.ics.uci.edu/ml/datasets/Bank+Marketing) that were collected from a Portuguese marketing campaign (i.e., phone calls) related with bank deposit subscription, from 2008 to 2013. The goal is to predict if the client will subscribe a term deposit.
 
-The similar dataset was analyzed in [Moro et al., 2014](http://dx.doi.org/10.1016/j.dss.2014.03.001). In this work, we test four binary classificaition models, using the packages `rminer`, `rpart` and `nnet` from `R` and the package `nn_model_np` of `Python` implemented by the author: decision tree (`R`), logistic regression (`R`), $2$-layer neural network (`R`) and $3$-layer neural network (`Python`). By using a certain splitting ratio and more complex model $3$-layer neural network, we are able to improve the results in [Table 3, Moro et al., 2014](http://dx.doi.org/10.1016/j.dss.2014.03.001).
+In this work, we analyze a set of 20 features given by the data in [Bank Marketing - EDA](http://htmlpreview.github.io/?https://github.com/DrMMZ/drmmz.github.io/blob/master/bank_EDA.nb.html). 
+
+We also compare 4 models: decision tree, logistic regression, 2-layer neural network and 3-layer neural network in [Bank Marketing - Modeling](http://htmlpreview.github.io/?https://github.com/DrMMZ/drmmz.github.io/blob/master/bank_modeling.nb.html). By using two metrics F1 score and area of the receiver operating characteristic curve (AUC), the four models were trained on the randomly selected set (80% of the data, 32950 examples) and tested on another randomly selected set (10% of the data, 4119 examples). The best model is given by the 3-layer neural network (F1=0.64, reported on the rest of 10% of the data 4119 examples). This improves the result in [Table 3, Moro et al., 2014](http://dx.doi.org/10.1016/j.dss.2014.03.001). Moreover, the decision tree model was applied to measure feature importance and reveal several key features, e.g., phone call duration, social and economic indicators such as employment rate and contact month of year.
+
+For the business purpose, the 3-layer neural network model can predict the success of telemarketing calls for selling bank deposits. Such model can increase campaign efficiency by helping in a better selection of a high quality and affordable list of potential buying customers.
 
 * [Movie Recommendations](http://htmlpreview.github.io/?https://github.com/DrMMZ/drmmz.github.io/blob/master/Movies.nb.html)
 
