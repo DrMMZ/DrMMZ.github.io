@@ -1,12 +1,12 @@
 ## **Projects**
 
-**Classification on Imbalanced Structured Data using Fully Connected Neural Networks**
+**[Classification on Imbalanced Structured Data using Fully Connected Neural Networks](http://)**
 
 This work uses the [data](https://archive.ics.uci.edu/ml/datasets/Bank+Marketing) that were collected from a marketing campaign (i.e., phone calls) related with bank deposit subscription. The goal is to predict whether or not the client will subscribe a term deposit. See the original paper published in [Moro et al., 2014](http://dx.doi.org/10.1016/j.dss.2014.03.001).
 
 We first analyze a set of 20 features given by the data in [Bank Marketing - EDA](http://htmlpreview.github.io/?https://github.com/DrMMZ/drmmz.github.io/blob/master/bank_EDA.nb.html), which is done by R.
 
-Since the data is imbalanced, oversampling and undersampling training data methods are used. However, their results are similar, based on AUC (0.95+/-0.01) and recall (0.91+/-0.06) metrics in a 2-layer neural network with 20 hidden units, ReLU activation and adam optimization. We also use batch normalization to speed up training and L1-regularization to reveal several key features. At the end, error analysis is provided. This part is done by Python. See the [notebook]() for the work. 
+Since the data is imbalanced, oversampling and undersampling training data methods are used. However, their results are similar, based on AUC (0.95+/-0.01) and recall (0.91+/-0.06) metrics in a 2-layer neural network with 20 hidden units, ReLU activation and adam optimization. We also use batch normalization to speed up training and L1-regularization to reveal several key features. At the end, error analysis is provided. This part is done by Python. See the [notebook](http://) for the work. 
 
 For the business purpose, the shallow 2-layer neural network model can predict the success of telemarketing calls for selling bank deposits. Such model can increase campaign efficiency by helping in a better selection of a high quality and affordable list of potential buying customers.
 
