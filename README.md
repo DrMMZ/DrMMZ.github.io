@@ -1,6 +1,6 @@
-## Projects
+## **Projects**
 
-* Classification on Imbalanced Structured Data using Fully Connected Neural Networks
+**Classification on Imbalanced Structured Data using Fully Connected Neural Networks**
 
 This work uses the [data](https://archive.ics.uci.edu/ml/datasets/Bank+Marketing) that were collected from a Portuguese marketing campaign (i.e., phone calls) related with bank deposit subscription, from 2008 to 2013. The goal is to predict whether or not the client will subscribe a term deposit. See the original results published in [Moro et al., 2014](http://dx.doi.org/10.1016/j.dss.2014.03.001).
 
@@ -10,10 +10,10 @@ Since the data is imbalanced, oversampling and undersampling training data metho
 
 For the business purpose, the shallow 2-layer neural network model can predict the success of telemarketing calls for selling bank deposits. Such model can increase campaign efficiency by helping in a better selection of a high quality and affordable list of potential buying customers.
 
-* [Movie Recommendations](http://htmlpreview.github.io/?https://github.com/DrMMZ/drmmz.github.io/blob/master/Movies.nb.html)
+**[Movie Recommendations](http://htmlpreview.github.io/?https://github.com/DrMMZ/drmmz.github.io/blob/master/Movies.nb.html)**
 
 Implemented in R the collaborative filtering with regularized mean square loss function and Quasi-Newton (BFGS) optimization. Then applied to a [dataset of movie ratings](https://grouplens.org/datasets/movielens/), tested on the author’s ratings and made personal movie recommendations.
 
-* [Is grade of failure related to class schedule?](http://htmlpreview.github.io/?https://github.com/DrMMZ/drmmz.github.io/blob/master/School.html)
+**[Is grade of failure related to class schedule?](http://htmlpreview.github.io/?https://github.com/DrMMZ/drmmz.github.io/blob/master/School.html)**
 
 Applied SQL technique on a dataset extracted from a [database](https://www.kaggle.com/Madgrades/uw-madison-courses). Since the assumptions of analysis of variance (ANOVA) test for our data are not met, used the Kruskal–Wallis test to discern whether there were real differences between the grade of failure rate of postsecondary students according to their class schedule.
