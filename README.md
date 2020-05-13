@@ -14,6 +14,20 @@ For the business purpose, the shallow 2-layer neural network model can predict t
 
 ----
 
+**[TensorFlow Implementation of Fully Connected Neural Networks](https://github.com/DrMMZ/drmmz.github.io/blob/master/NN_tensorflow.ipynb)**
+
+Implemented in TensorFlow a fully connected L-layer ReLU neural network for any integer L>0 with L1 or L2-regularization, dropout, batch normalization, different optimization methods and loss functions.
+
+----
+
+**[NumPy Implementation of Fully Connected Neural Networks](https://github.com/DrMMZ/drmmz.github.io/blob/master/NN_numpy.ipynb)**
+
+Implemented a fully connected L-layer ReLU network for any integer L>0 with L1 or L2-regularized softmax loss and stochastic gradient descent in Numpy.
+
+The implementation is based on *Derivatives in fully connected neural networks* by Ming Ming Zhang. In addition, numeric stability and gradients checking are added.
+
+----
+
 **[Movie Recommendations](http://htmlpreview.github.io/?https://github.com/DrMMZ/drmmz.github.io/blob/master/Movies.nb.html)**
 
 Implemented in R the collaborative filtering with regularized mean square loss function and Quasi-Newton (BFGS) optimization. Then applied to a [dataset of movie ratings](https://grouplens.org/datasets/movielens/), tested on the author’s ratings and made personal movie recommendations.
