@@ -2,7 +2,7 @@
 
 ----
 
-**[Sequential Convolutional Neural Networks](https://github.com/DrMMZ/drmmz.github.io/blob/master/NN_ImbalancedStructured.ipynb)**
+**[Sequential Convolutional Neural Networks](https://github.com/DrMMZ/drmmz.github.io/blob/master/ConvNet.ipynb)**
 
 Using TensorFlow, we experiment with different ConvNet architectures on the [CIFAR10](http://www.cs.toronto.edu/~kriz/cifar.html) dataset. The final model took inspiration from [VGG-16](https://arxiv.org/abs/1409.1556) that achieves above 70% accuracy on the test set within 10 epochs training using Adam optimizer. In particular, the architecture is the following:
 
