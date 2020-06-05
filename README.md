@@ -6,7 +6,7 @@
 
 Using TensorFlow, we experiment with different ConvNet architectures on the [CIFAR10](http://www.cs.toronto.edu/~kriz/cifar.html) dataset. The final model took inspiration from [VGG-16](https://arxiv.org/abs/1409.1556) that achieves above 70% accuracy on the test set within 10 epochs training using Adam optimizer. In particular, the architecture is the following:
 
-(Conv32-BatchNorm-ReLU) × 2 - MaxPool - (Conv64-BatchNorm-ReLU) × 3 - MaxPool - (Conv128-BatchNorm-ReLU) × 3 - MaxPool - FullyConnected × 2
+*(Conv32-BatchNorm-ReLU) × 2 - MaxPool - (Conv64-BatchNorm-ReLU) × 3 - MaxPool - (Conv128-BatchNorm-ReLU) × 3 - MaxPool - FullyConnected × 2*
 
 ----
 
