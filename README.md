@@ -4,7 +4,7 @@
 
 **[Sequential Convolutional Neural Networks](https://github.com/DrMMZ/drmmz.github.io/blob/master/ConvNet.ipynb)**
 
-Using TensorFlow and GPU, we experiment with different ConvNet architectures on the [CIFAR10](http://www.cs.toronto.edu/~kriz/cifar.html) dataset. The final model took inspiration from [VGG](https://arxiv.org/abs/1409.1556) that achieves above 70% accuracy on the test set within 10 epochs training using Adam optimizer 64 mini-batches. In particular, the architecture is the following:
+Using TensorFlow and GPU, we experiment with different ConvNet architectures on the [CIFAR10](http://www.cs.toronto.edu/~kriz/cifar.html) dataset, which consists of 50k training images and 10k testing images in 10 classes. The final model took inspiration from [VGG](https://arxiv.org/abs/1409.1556) that achieves above 70% accuracy on the testing images within 10 epochs training using Adam optimizer 64 mini-batches. In particular, the architecture is the following:
 
 *(Conv32-BatchNorm-ReLU) × 2 - MaxPool - (Conv64-BatchNorm-ReLU) × 3 - MaxPool - (Conv128-BatchNorm-ReLU) × 3 - MaxPool - FullyConnected × 2*
 
