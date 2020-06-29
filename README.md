@@ -6,7 +6,7 @@
 
 Using TensorFlow, we implement residual networks from [He et al, Deep Residual Learning for Image Recognition](https://arxiv.org/abs/1512.03385), as well as plain networks. We compare plain 20/56-layers, residual 20/56/110-layers networks on the [CIFAR-10 dataset](https://www.cs.toronto.edu/~kriz/cifar.html).
 
-The plain and residual architectures are shown in the below figure.
+The plain and residual architectures are shown in the below [figure](https://github.com/DrMMZ/drmmz.github.io/blob/master/ResNet/architectures.png).
 
 <figure>
   <img align="middle" src='https://github.com/DrMMZ/drmmz.github.io/blob/master/ResNet/architectures.png' width="500px" height="400px"/>
@@ -16,7 +16,7 @@ All networks use 3 × 3 convolutions and contain 3 blocks. Each block can be rep
 
 For training, we use Adam optimizer with the initial learning rate 0.001 (𝛽1 = 0.9, 𝛽2 = 0.999), halved whenever the validation loss is not decreasing for 10 consecutive epochs. These models are trained on Google Colab GPU with a mini-batch size of 128 for a 45k/5k train/val split, maximal 200 epochs and early stopping when the validation loss is not decreasing for 30 consecutive epochs. We also apply L2-regularization with a strength of 0.001, batch normalization, He initialization and data augmentation, i.e., 4 pixels padding on each side followed by 3 × 3 crop or horizontal flip. 
 
-These lead to the following results.
+These lead to the following [results](https://github.com/DrMMZ/drmmz.github.io/blob/master/ResNet/results.png).
 
 <figure>
   <img align="middle" src='https://github.com/DrMMZ/drmmz.github.io/blob/master/ResNet/results.png' width="600px" height="100px"/>
