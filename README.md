@@ -1,3 +1,6 @@
+layout: page
+title: "Ming Ming Zhang"
+
 ## **Learning**
 
 ----
