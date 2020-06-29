@@ -9,7 +9,7 @@ Using TensorFlow, we implement residual networks from [He et al, Deep Residual L
 The plain and residual architectures are shown in the below [figure](https://github.com/DrMMZ/drmmz.github.io/blob/master/ResNet/architectures.png).
 
 <figure>
-  <img align="middle" src='https://github.com/DrMMZ/drmmz.github.io/blob/master/ResNet/architectures.png' width="500px" height="400px"/>
+  <img align="middle" src='ResNet/architectures.png' width="500px" height="400px"/>
 </figure>
 
 All networks use 3 × 3 convolutions and contain 3 blocks. Each block can be repeated by n times and has the number of filters in {16, 32, 64} such that if the feature map size is halved (denoted by /2 in the above figure), the number of filters is doubled. The networks end with a global average pooling layer and a 10-unit fully-connected layer. For residual architecture, we use identity shortcuts in the block 1, and a mixed of projection and identity shortcuts in the block 2 and 3, which is different from [He et al, Deep Residual Learning for Image Recognition](https://arxiv.org/abs/1512.03385) where they use identity shortcuts in all blocks.
@@ -19,7 +19,7 @@ For training, we use Adam optimizer with the initial learning rate 0.001 (𝛽1 
 These lead to the following [results](https://github.com/DrMMZ/drmmz.github.io/blob/master/ResNet/results.png).
 
 <figure>
-  <img align="middle" src='https://github.com/DrMMZ/drmmz.github.io/blob/master/ResNet/results.png' width="600px" height="100px"/>
+  <img align="middle" src='ResNet/results.png' width="600px" height="100px"/>
 </figure>
 
 ----
