@@ -1,7 +1,3 @@
-## **Learning**
-
-----
-
 **[ResNets on CIFAR-10](https://github.com/DrMMZ/drmmz.github.io/blob/master/ResNet/ResNet.py)**
 
 Using TensorFlow, we implement residual networks from [He et al, Deep Residual Learning for Image Recognition](https://arxiv.org/abs/1512.03385), as well as plain networks. We compare plain 20/56-layers, residual 20/56/110-layers networks on the [CIFAR-10 dataset](https://www.cs.toronto.edu/~kriz/cifar.html).
