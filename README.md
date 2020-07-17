@@ -6,7 +6,7 @@ Coming...
 
 **[FaceNet on LFW](https://github.com/DrMMZ/drmmz.github.io/blob/master/FaceNet)**
 
-Based on the paper [FaceNet: A Unified Embedding for Face Recognition and Clustering](https://arxiv.org/abs/1503.03832), we implement using TensorFlow an Inception-like model from the paper [Going deeper with convolutions](https://arxiv.org/pdf/1409.4842.pdf) to build a system verifying/recognizing human faces. The code is availble in [here](https://github.com/DrMMZ/drmmz.github.io/blob/master/FaceNet/FaceNet.py) and the structure is shown in below [figure](https://github.com/DrMMZ/drmmz.github.io/blob/master/FaceNet/FaceNet_fig.png):
+Based on the paper [Schroff et al, FaceNet: A Unified Embedding for Face Recognition and Clustering](https://arxiv.org/abs/1503.03832), we implement using TensorFlow an Inception-like model from the paper [Szegedy et al, Going deeper with convolutions](https://arxiv.org/pdf/1409.4842.pdf) to build a system verifying/recognizing human faces. The code is availble in [here](https://github.com/DrMMZ/drmmz.github.io/blob/master/FaceNet/FaceNet.py) and the structure is shown in below [figure](https://github.com/DrMMZ/drmmz.github.io/blob/master/FaceNet/FaceNet_fig.png):
 
 <figure>
   <img align="middle" src='FaceNet/FaceNet_fig.png' width="500px" height="400px"/>
