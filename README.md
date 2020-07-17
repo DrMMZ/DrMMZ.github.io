@@ -1,16 +1,36 @@
-**[ResNets on CIFAR-10](https://github.com/DrMMZ/drmmz.github.io/blob/master/ResNet/ResNet.py)**
+**[FaceNet on LFW](https://github.com/DrMMZ/drmmz.github.io/blob/master/FaceNet)**
 
-Using TensorFlow, we implement residual networks from [He et al, Deep Residual Learning for Image Recognition](https://arxiv.org/abs/1512.03385), as well as plain networks. We compare plain 20/56-layers, residual 20/56/110-layers networks on the [CIFAR-10 dataset](https://www.cs.toronto.edu/~kriz/cifar.html).
+Based on the paper [FaceNet: A Unified Embedding for Face Recognition and Clustering](https://arxiv.org/abs/1503.03832), we implement using TensorFlow an Inception-like model from the paper [Going deeper with convolutions](https://arxiv.org/pdf/1409.4842.pdf) to build a system verifying/recognizing human faces. The code is availble in [here](https://github.com/DrMMZ/drmmz.github.io/blob/master/FaceNet/FaceNet.py) and the structure is shown in below [figure](https://github.com/DrMMZ/drmmz.github.io/blob/master/FaceNet/FaceNet_fig.png):
+
+<figure>
+  <img align="middle" src='FaceNet/FaceNet_fig.png' width="500px" height="400px"/>
+</figure>
+
+The structure is inspired by [nn4.small2](https://github.com/cmusatyalab/openface/blob/master/models/openface/nn4.small2.def.lua) and uses RBG images of size (96,96,3) as input. Compared to the structure of NN2 in Table 2 of [FaceNet: A Unified Embedding for Face Recognition and Clustering](https://arxiv.org/abs/1503.03832), our model has less number of inception modules in the block 4, different filter sizes in the block 5 and all L2 pooling are replaced by average pooling.
+
+We use Google Colab GPU to train the FaceNet model on the [Labeled Faces in the Wild](http://vis-www.cs.umass.edu/lfw/) dataset (deep funneling) with a mini-batch size of 256 for a 0.8/0.2 train/val split for 10 epochs, without data augmentation. Here, the mini-batch size should be large (i.e., more than 1k) because of the triplet selection. However, due to the limited memeory in Google Colab GPU, we have to decrease mini-batch size. 
+
+In training, we apply Adam optimizer with the learning rate lr = 0.001 (𝛽1 = 0.9, 𝛽2 = 0.999), and set the margin α = 0.2 and the distance threshold d = 1.0 (hyperparameters from [FaceNet: A Unified Embedding for Face Recognition and Clustering](https://arxiv.org/abs/1503.03832)). This yields greater than 0.7 AUC. See the following [table](https://github.com/DrMMZ/drmmz.github.io/blob/master/FaceNet/FaceNet_table.png) for detail.
+
+<figure>
+  <img align="middle" src='FaceNet/FaceNet_table.png' width="600px" height="50px"/>
+</figure>
+
+----
+
+**[ResNets on CIFAR-10](https://github.com/DrMMZ/drmmz.github.io/blob/master/ResNet)**
+
+Using TensorFlow, we implement residual networks from [He et al, Deep Residual Learning for Image Recognition](https://arxiv.org/abs/1512.03385), as well as plain networks. The code is available in [here](https://github.com/DrMMZ/drmmz.github.io/blob/master/ResNet/ResNet.py). We compare plain 20/56-layers, residual 20/56/110-layers networks on the [CIFAR-10 dataset](https://www.cs.toronto.edu/~kriz/cifar.html).
 
 The plain and residual architectures are shown in the below [figure](https://github.com/DrMMZ/drmmz.github.io/blob/master/ResNet/architectures.png).
 
 <figure>
-  <img align="middle" src='ResNet/architectures.png' width="500px" height="400px"/>
+  <img align="middle" src='ResNet/architectures.png' width="500px" height="450px"/>
 </figure>
 
 All networks use 3 × 3 convolutions and contain 3 blocks. Each block can be repeated by n times and has the number of filters in {16, 32, 64} such that if the feature map size is halved (denoted by /2 in the above figure), the number of filters is doubled. The networks end with a global average pooling layer and a 10-unit fully-connected layer. For residual architecture, we use identity shortcuts in the block 1, and a mixed of projection and identity shortcuts in the block 2 and 3, which is different from [He et al, Deep Residual Learning for Image Recognition](https://arxiv.org/abs/1512.03385) where they use identity shortcuts in all blocks.
 
-For training, we use Adam optimizer with the initial learning rate 0.001 (𝛽1 = 0.9, 𝛽2 = 0.999), halved whenever the validation loss is not decreasing for 10 consecutive epochs. These models are trained on Google Colab GPU with a mini-batch size of 128 for a 45k/5k train/val split, maximal 200 epochs and early stopping when the validation loss is not decreasing for 30 consecutive epochs. We also apply L2-regularization with a strength of 0.001, batch normalization, He initialization and data augmentation, i.e., 4 pixels padding on each side followed by 3 × 3 crop or horizontal flip. 
+For training, we use Adam optimizer with the initial learning rate 0.001 (𝛽1 = 0.9, 𝛽2 = 0.999), halved whenever the validation loss is not decreasing for 10 consecutive epochs. These models are trained on Google Colab GPU with a mini-batch size of 128 for a 45k/5k train/val split, maximal 200 epochs and early stopping when the validation loss is not decreasing for 30 consecutive epochs. We also apply L2-regularization with a strength of 0.001, batch normalization, He initialization and data augmentation, i.e., 4 pixels padding on each side followed by 32 × 32 crop or horizontal flip. 
 
 These lead to the following [results](https://github.com/DrMMZ/drmmz.github.io/blob/master/ResNet/results.png).
 
