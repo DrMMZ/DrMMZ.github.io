@@ -1,3 +1,11 @@
+**[ProtoNets-TensorFlow](https://github.com/DrMMZ/ProtoNets-TensorFlow)**
+
+Implement `ProtoNets` from [Snell et al., prototypical networks for few-shot learning](https://arxiv.org/abs/1703.05175) in TensorFlow 2, and perform experiments on the [COVIDx dataset](https://github.com/lindawangg/COVID-Net/blob/master/docs/COVIDx.md).
+
+The embedding architecture of `ProtoNets` is composed of 4 convolutional blocks. Each block consists of a 64-filter 3 by 3 convolution, batch normalization, ReLU and a 2 by 2 max pooling layer. Moreover, `ProtoNets` uses Euclidean distance.
+
+See [here](https://github.com/DrMMZ/ProtoNets-TensorFlow/blob/master/ProtoNets/ProtoNets.py) for the implementation of `ProtoNets` and [here](https://github.com/DrMMZ/ProtoNets-TensorFlow/blob/master/Experiments/COVIDx.ipynb) for the notebook demonstration on the COVIDx dataset experiments.
+
 **[Image Caption]()**
 
 Coming...
