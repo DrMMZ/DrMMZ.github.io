@@ -6,6 +6,8 @@ The embedding architecture of `ProtoNets` is composed of 4 convolutional blocks.
 
 See [here](https://github.com/DrMMZ/ProtoNets-TensorFlow/blob/master/ProtoNets/ProtoNets.py) for the implementation of `ProtoNets` and [here](https://github.com/DrMMZ/ProtoNets-TensorFlow/blob/master/Experiments/COVIDx.ipynb) for the notebook demonstration on the COVIDx dataset experiments.
 
+----
+
 **[Image Caption]()**
 
 Coming...
