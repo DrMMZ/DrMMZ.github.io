@@ -1,6 +1,6 @@
 **[Ensemble Model: ResNet + FPN](https://github.com/DrMMZ/ResFPN)**
 
-This is an implementation of *ResFPN* on Python 3 and TensorFlow 2. The model classifies images by ensembling predictions from [Residual Network](https://arxiv.org/abs/1512.03385) (ResNet) and [Feature Pyramid Network](https://arxiv.org/abs/1612.03144) (FPN). 
+This is an [implementation](https://github.com/DrMMZ/ResFPN) of *ResFPN* on Python 3 and TensorFlow 2. The model classifies images by ensembling predictions from [Residual Network](https://arxiv.org/abs/1512.03385) (ResNet) and [Feature Pyramid Network](https://arxiv.org/abs/1612.03144) (FPN). 
 
 ----
 
