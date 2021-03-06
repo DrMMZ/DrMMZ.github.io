@@ -1,3 +1,9 @@
+**[Resemble Model: ResNet + FPN](https://github.com/DrMMZ/ResFPN)
+
+This is an implementation of *ResFPN* on Python 3 and TensorFlow 2. The model classifies images by ensembling classifiers from [Residual Network](https://arxiv.org/abs/1512.03385) (ResNet) and [Feature Pyramid Network](https://arxiv.org/abs/1612.03144) (FPN). 
+
+----
+
 **[ProtoNets-TensorFlow](https://github.com/DrMMZ/ProtoNets-TensorFlow)**
 
 Implement [ProtoNets for few-shot learning](https://arxiv.org/abs/1703.05175) in TensorFlow 2, and perform experiments on the [COVIDx dataset](https://github.com/lindawangg/COVID-Net/blob/master/docs/COVIDx.md).
