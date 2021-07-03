@@ -2,10 +2,9 @@
 
 This is an implementation of [*ResFPN*](https://github.com/DrMMZ/ResFPN) on Python 3 and TensorFlow 2. The model classifies images by ensembling predictions from [Residual Network](https://arxiv.org/abs/1512.03385) (ResNet) and [Feature Pyramid Network](https://arxiv.org/abs/1612.03144) (FPN). 
 
-The repository includes:
-* source code of ResFPN built on ResNet50/101 and FPN;
-* source code of [Focal Loss](https://arxiv.org/abs/1708.02002) (generalize to multi-class, with class balancing parameter); and
-* jupyter notebook demonstration the use of ResFPN in training, evaluation and visualization.
+Example classifications using ResFPN on [tf_flowers](https://www.tensorflow.org/datasets/catalog/tf_flowers) dataset.
+
+![tf_flowers](https://github.com/DrMMZ/drmmz.github.io/images/flower_movie.gif)
 
 ----
 
