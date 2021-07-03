@@ -4,7 +4,7 @@ This is an implementation of [*ResFPN*](https://github.com/DrMMZ/ResFPN) on Pyth
 
 Example classifications using ResFPN on [tf_flowers](https://www.tensorflow.org/datasets/catalog/tf_flowers) dataset.
 
-![tf_flowers](https://github.com/DrMMZ/drmmz.github.io/images/flower_movie.gif)
+![tf_flowers](https://github.com/DrMMZ/drmmz.github.io/blob/master/images/flower_movie.gif)
 
 ----
 
