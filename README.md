@@ -1,8 +1,8 @@
 **[Ensemble Model: ResNet + FPN](https://github.com/DrMMZ/ResFPN)**
 
-This is an implementation of [*ResFPN*](https://github.com/DrMMZ/ResFPN) on Python 3 and TensorFlow 2. The model classifies images by ensembling predictions from [Residual Network](https://arxiv.org/abs/1512.03385) (ResNet) and [Feature Pyramid Network](https://arxiv.org/abs/1612.03144) (FPN). 
+This is an implementation of [*ResFPN*](https://github.com/DrMMZ/ResFPN) on Python 3 and TensorFlow 2. The model classifies images by ensembling predictions from [Residual Network](https://arxiv.org/abs/1512.03385) (ResNet) and [Feature Pyramid Network](https://arxiv.org/abs/1612.03144) (FPN), and can be trained by minimizing [focal loss](https://arxiv.org/abs/1708.02002). 
 
-Example classifications using ResFPN on [tf_flowers](https://www.tensorflow.org/datasets/catalog/tf_flowers) dataset.
+Below are example classifications using ResFPN on the [tf_flowers](https://www.tensorflow.org/datasets/catalog/tf_flowers) dataset.
 
 ![tf_flowers](https://raw.githubusercontent.com/DrMMZ/drmmz.github.io/master/images/flower_movie.gif)
 
