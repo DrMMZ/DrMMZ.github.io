@@ -2,7 +2,7 @@
 
 [RetinaNet](https://arxiv.org/abs/1708.02002) is an efficient one-stage object detector trained with the focal loss. This [repository](https://github.com/DrMMZ/RetinaNet) is a TensorFlow2 implementation of RetinaNet and its applications, aiming for creating a tool in object detection task that can be easily extended to other datasets or used in building projects.
 
-Below are example detections using RetinaNet on the [nuclei](https://www.kaggle.com/c/data-science-bowl-2018) dataset randomly selected from un-trained images.
+Below are example real-time detections using RetinaNet on the [nuclei](https://www.kaggle.com/c/data-science-bowl-2018) dataset randomly selected from un-trained images.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/DrMMZ/drmmz.github.io/master/images/nuclei_movie.gif" width='360' height='360'/>
