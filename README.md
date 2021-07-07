@@ -17,7 +17,7 @@ This is an implementation of [*ResFPN*](https://github.com/DrMMZ/ResFPN) on Pyth
 Below are example classifications using ResFPN on the [tf_flowers](https://www.tensorflow.org/datasets/catalog/tf_flowers) dataset randomly selected from un-trained images.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/DrMMZ/drmmz.github.io/master/images/flower_movie.gif" width='640' height='480'/>
+  <img src="https://raw.githubusercontent.com/DrMMZ/drmmz.github.io/master/images/flower_movie.gif" width='480' height='360'/>
 </p>
 
 ----
