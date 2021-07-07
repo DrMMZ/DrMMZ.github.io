@@ -5,7 +5,7 @@
 Below are example detections using RetinaNet on the [nuclei](https://www.kaggle.com/c/data-science-bowl-2018) dataset randomly selected from un-trained images.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/DrMMZ/drmmz.github.io/master/images/nuclei_movie.gif" width='320' height='320'/>
+  <img src="https://raw.githubusercontent.com/DrMMZ/drmmz.github.io/master/images/nuclei_movie.gif" width='360' height='360'/>
 </p> 
 
 ----
@@ -17,7 +17,7 @@ This is an implementation of [*ResFPN*](https://github.com/DrMMZ/ResFPN) on Pyth
 Below are example classifications using ResFPN on the [tf_flowers](https://www.tensorflow.org/datasets/catalog/tf_flowers) dataset randomly selected from un-trained images.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/DrMMZ/drmmz.github.io/master/images/flower_movie.gif" width='512' height='360'/>
+  <img src="https://raw.githubusercontent.com/DrMMZ/drmmz.github.io/master/images/flower_movie.gif" width='640' height='480'/>
 </p>
 
 ----
